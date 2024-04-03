@@ -1,0 +1,553 @@
+basePath: /
+definitions:
+  github_com_arfan21_mertani_internal_model.DeviceCreateRequest:
+    properties:
+      description:
+        type: string
+      location:
+        type: string
+      name:
+        type: string
+      type:
+        type: string
+    required:
+    - description
+    - location
+    - name
+    - type
+    type: object
+  github_com_arfan21_mertani_internal_model.DeviceResponse:
+    properties:
+      created_at:
+        type: string
+      description:
+        type: string
+      id:
+        type: string
+      location:
+        type: string
+      name:
+        type: string
+      sensors:
+        items:
+          $ref: '#/definitions/github_com_arfan21_mertani_internal_model.SensorResponse'
+        type: array
+      type:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  github_com_arfan21_mertani_internal_model.DeviceUpdateRequest:
+    properties:
+      description:
+        type: string
+      id:
+        type: string
+      location:
+        type: string
+      name:
+        type: string
+      type:
+        type: string
+    type: object
+  github_com_arfan21_mertani_internal_model.SensorCreateRequest:
+    properties:
+      description:
+        type: string
+      device_id:
+        type: string
+      name:
+        type: string
+      type:
+        type: string
+    required:
+    - description
+    - device_id
+    - name
+    - type
+    type: object
+  github_com_arfan21_mertani_internal_model.SensorResponse:
+    properties:
+      created_at:
+        type: string
+      description:
+        type: string
+      device_id:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      type:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  github_com_arfan21_mertani_internal_model.SensorUpdateRequest:
+    properties:
+      description:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      type:
+        type: string
+    type: object
+  github_com_arfan21_mertani_internal_model.UserLoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        maxLength: 20
+        minLength: 8
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  github_com_arfan21_mertani_internal_model.UserLoginResponse:
+    properties:
+      access_token:
+        type: string
+      expires_in:
+        type: integer
+      token_type:
+        type: string
+    type: object
+  github_com_arfan21_mertani_internal_model.UserRegisterRequest:
+    properties:
+      email:
+        type: string
+      fullname:
+        type: string
+      password:
+        maxLength: 20
+        minLength: 8
+        type: string
+    required:
+    - email
+    - fullname
+    - password
+    type: object
+  github_com_arfan21_mertani_pkg_pkgutil.ErrValidationResponse:
+    properties:
+      field:
+        type: string
+      message:
+        type: string
+    type: object
+  github_com_arfan21_mertani_pkg_pkgutil.HTTPResponse:
+    properties:
+      code:
+        example: 200
+        type: integer
+      data: {}
+      errors:
+        items: {}
+        type: array
+      message:
+        example: Success
+        type: string
+      status:
+        example: OK
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    name: API Support
+    url: http://www.synapsis.id
+  description: This is a sample server cell for mertani.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: mertani
+  version: "1.0"
+paths:
+  /api/v1/devices:
+    get:
+      consumes:
+      - application/json
+      description: Get all devices
+      parameters:
+      - description: With the bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_arfan21_mertani_pkg_pkgutil.HTTPResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/github_com_arfan21_mertani_internal_model.DeviceResponse'
+                  type: array
+              type: object
+      summary: Get All Devices
+      tags:
+      - Device
+    post:
+      consumes:
+      - application/json
+      description: Create a new device
+      parameters:
+      - description: With the bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Device data
+        in: body
+        name: device
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_arfan21_mertani_internal_model.DeviceCreateRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/github_com_arfan21_mertani_pkg_pkgutil.HTTPResponse'
+      summary: Create Device
+      tags:
+      - Device
+  /api/v1/devices/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete device by ID
+      parameters:
+      - description: With the bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Device ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_arfan21_mertani_pkg_pkgutil.HTTPResponse'
+      summary: Delete Device
+      tags:
+      - Device
+    get:
+      consumes:
+      - application/json
+      description: Get device by ID
+      parameters:
+      - description: With the bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Device ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_arfan21_mertani_pkg_pkgutil.HTTPResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_arfan21_mertani_internal_model.DeviceResponse'
+              type: object
+      summary: Get Device By ID
+      tags:
+      - Device
+    put:
+      consumes:
+      - application/json
+      description: Update device by ID
+      parameters:
+      - description: With the bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Device ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Device data
+        in: body
+        name: device
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_arfan21_mertani_internal_model.DeviceUpdateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_arfan21_mertani_pkg_pkgutil.HTTPResponse'
+      summary: Update Device
+      tags:
+      - Device
+  /api/v1/sensors:
+    post:
+      consumes:
+      - application/json
+      description: Create Sensor
+      parameters:
+      - description: With the bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Payload Sensor Create Request
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_arfan21_mertani_internal_model.SensorCreateRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/github_com_arfan21_mertani_pkg_pkgutil.HTTPResponse'
+        "400":
+          description: Error validation field
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_arfan21_mertani_pkg_pkgutil.HTTPResponse'
+            - properties:
+                errors:
+                  items:
+                    $ref: '#/definitions/github_com_arfan21_mertani_pkg_pkgutil.ErrValidationResponse'
+                  type: array
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_arfan21_mertani_pkg_pkgutil.HTTPResponse'
+      summary: Create Sensor
+      tags:
+      - Sensor
+  /api/v1/sensors/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete Sensor
+      parameters:
+      - description: With the bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Sensor ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_arfan21_mertani_pkg_pkgutil.HTTPResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_arfan21_mertani_pkg_pkgutil.HTTPResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_arfan21_mertani_pkg_pkgutil.HTTPResponse'
+      summary: Delete Sensor
+      tags:
+      - Sensor
+    get:
+      consumes:
+      - application/json
+      description: Get Sensor By ID
+      parameters:
+      - description: With the bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Sensor ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Success
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_arfan21_mertani_pkg_pkgutil.HTTPResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_arfan21_mertani_internal_model.SensorResponse'
+              type: object
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_arfan21_mertani_pkg_pkgutil.HTTPResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_arfan21_mertani_pkg_pkgutil.HTTPResponse'
+      summary: Get Sensor By ID
+      tags:
+      - Sensor
+    put:
+      consumes:
+      - application/json
+      description: Update Sensor
+      parameters:
+      - description: With the bearer token
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: Sensor ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Payload Sensor Update Request
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_arfan21_mertani_internal_model.SensorUpdateRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/github_com_arfan21_mertani_pkg_pkgutil.HTTPResponse'
+        "400":
+          description: Error validation field
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_arfan21_mertani_pkg_pkgutil.HTTPResponse'
+            - properties:
+                errors:
+                  items:
+                    $ref: '#/definitions/github_com_arfan21_mertani_pkg_pkgutil.ErrValidationResponse'
+                  type: array
+              type: object
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/github_com_arfan21_mertani_pkg_pkgutil.HTTPResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_arfan21_mertani_pkg_pkgutil.HTTPResponse'
+      summary: Update Sensor
+      tags:
+      - Sensor
+  /api/v1/users/login:
+    post:
+      consumes:
+      - application/json
+      description: Login user
+      parameters:
+      - description: Payload user Login Request
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_arfan21_mertani_internal_model.UserLoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_arfan21_mertani_pkg_pkgutil.HTTPResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/github_com_arfan21_mertani_internal_model.UserLoginResponse'
+              type: object
+        "400":
+          description: Error validation field
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_arfan21_mertani_pkg_pkgutil.HTTPResponse'
+            - properties:
+                errors:
+                  items:
+                    $ref: '#/definitions/github_com_arfan21_mertani_pkg_pkgutil.ErrValidationResponse'
+                  type: array
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_arfan21_mertani_pkg_pkgutil.HTTPResponse'
+      summary: Login user
+      tags:
+      - user
+  /api/v1/users/register:
+    post:
+      consumes:
+      - application/json
+      description: Register user
+      parameters:
+      - description: Payload user Register Request
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_arfan21_mertani_internal_model.UserRegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/github_com_arfan21_mertani_pkg_pkgutil.HTTPResponse'
+        "400":
+          description: Error validation field
+          schema:
+            allOf:
+            - $ref: '#/definitions/github_com_arfan21_mertani_pkg_pkgutil.HTTPResponse'
+            - properties:
+                errors:
+                  items:
+                    $ref: '#/definitions/github_com_arfan21_mertani_pkg_pkgutil.ErrValidationResponse'
+                  type: array
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_arfan21_mertani_pkg_pkgutil.HTTPResponse'
+      summary: Register user
+      tags:
+      - user
+swagger: "2.0"
